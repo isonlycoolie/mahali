@@ -3,6 +3,10 @@
 </p>
 
 <p align="center">
+  <img src="brand/svg/mark-on-dark.svg" width="40" alt="mahali">
+</p>
+
+<p align="center">
   <strong>Every place in Tanzania, from region down to street.</strong><br>
   31 regions · 158 districts · 3,959 wards · 16,692 streets · 64,000+ villages and hamlets
 </p>
@@ -20,7 +24,6 @@ Built for the moment a person fills in an address: pick a region, then a distric
 - [Data shape](#data-shape)
 - [Building an address picker](#building-an-address-picker)
 - [Contributing](#contributing)
-- [Brand](#brand)
 
 ## Quick start
 
@@ -106,15 +109,3 @@ Corrections and additions are welcome, from a misspelt street to a whole region.
 3. Open a pull request with both changes and a line on where the information comes from.
 
 Keep one row per place, use the local spelling, and leave a column empty rather than guessing.
-
-## Brand
-
-The mark is a drop with one point, the place, and the dot that marks it. The colours are Tanzania green `#1EB53A` and ink `#141517`.
-
-- `brand/svg/mark.svg` and `mark-on-dark.svg` hold the mark for light and dark backgrounds.
-- `brand/svg/lockup.svg` and `lockup-on-dark.svg` hold the mark with the wordmark.
-- `brand/svg/app-icon.svg` and `app-icon-light.svg` hold the rounded tile, with PNG sizes in `brand/png/`.
-
-Every letter is outlined, so no font is needed. To rebuild the files, run `python -I brand/build/make_brand.py`, then `node brand/build/rasterize.mjs` with `SHARP_FROM` pointing at any folder that has `sharp` installed.
-
-<p align="center"><br><img src="brand/svg/mark-on-dark.svg" width="28" alt=""><br><sub>mahali</sub></p>
