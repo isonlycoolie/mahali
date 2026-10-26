@@ -55,3 +55,66 @@ Names are written the way Tanzanians write them: `Dar es Salaam`, `Chang'ombe`, 
 
 Zanzibar's five regions are listed. Their districts, wards and shehia are the next addition, and contributions are very welcome.
 
+## Data shape
+
+Each region file nests districts, wards, streets and places, sorted by name:
+
+```json
+{
+  "name": "Arusha",
+  "slug": "arusha",
+  "code": "23",
+  "zone": "mainland",
+  "districts": [
+    {
+      "name": "Arusha CBD",
+      "code": "231",
+      "wards": [
+        {
+          "name": "Sekei",
+          "code": "23101",
+          "streets": [{ "name": "Sanawari", "places": [] }]
+        }
+      ]
+    }
+  ]
+}
+```
+
+The index keeps only what a first screen needs:
+
+```json
+[{ "name": "Arusha", "slug": "arusha", "code": "23", "zone": "mainland", "districts": [{ "name": "Arumeru", "code": "233" }] }]
+```
+
+## Building an address picker
+
+1. Load `json/index.json` once and fill the region list.
+2. When someone picks a region, fetch that region's file and fill the district list.
+3. Fill wards from the chosen district and streets from the chosen ward.
+4. Put a search box at the top of every list, and let people type a place the list does not have yet, such as a new street or a Zanzibar ward.
+5. When a choice changes, clear the levels below it, so a ward never sits under the wrong district.
+
+The largest region file is under 100 KB, so a phone on a slow network loads it in a moment.
+
+## Contributing
+
+Corrections and additions are welcome, from a misspelt street to a whole region.
+
+1. Edit `data/tanzania.csv`, or `data/regions.csv` for a region.
+2. Rebuild the JSON with `node scripts/build.mjs`. It needs Node 20 or newer and nothing else.
+3. Open a pull request with both changes and a line on where the information comes from.
+
+Keep one row per place, use the local spelling, and leave a column empty rather than guessing.
+
+## Brand
+
+The mark is a drop with one point, the place, and the dot that marks it. The colours are Tanzania green `#1EB53A` and ink `#141517`.
+
+- `brand/svg/mark.svg` and `mark-on-dark.svg` hold the mark for light and dark backgrounds.
+- `brand/svg/lockup.svg` and `lockup-on-dark.svg` hold the mark with the wordmark.
+- `brand/svg/app-icon.svg` and `app-icon-light.svg` hold the rounded tile, with PNG sizes in `brand/png/`.
+
+Every letter is outlined, so no font is needed. To rebuild the files, run `python -I brand/build/make_brand.py`, then `node brand/build/rasterize.mjs` with `SHARP_FROM` pointing at any folder that has `sharp` installed.
+
+<p align="center"><br><img src="brand/svg/mark-on-dark.svg" width="28" alt=""><br><sub>mahali</sub></p>
