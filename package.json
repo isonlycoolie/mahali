@@ -1,0 +1,16 @@
+{
+  "name": "mahali",
+  "version": "1.0.0",
+  "description": "Every place in Tanzania, from region down to street and village",
+  "type": "module",
+  "files": ["data", "json"],
+  "exports": {
+    "./json/*": "./json/*",
+    "./data/*": "./data/*"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs"
+  },
+  "repository": "github:isonlycoolie/mahali",
+  "keywords": ["tanzania", "regions", "districts", "wards", "streets", "postcodes", "address"]
+}
