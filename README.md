@@ -1,47 +1,39 @@
-# mahali
+<p align="center">
+  <img src="brand/png/banner-1600.png" alt="mahali: every place in Tanzania, from region down to street" width="100%">
+</p>
 
-Every place in Tanzania, from region down to street and village, in one tidy list.
+<p align="center">
+  <strong>Every place in Tanzania, from region down to street.</strong><br>
+  31 regions · 158 districts · 3,959 wards · 16,692 streets · 64,000+ villages and hamlets
+</p>
 
-*Mahali* is Swahili for "place". Use it for address dropdowns, search and checks, in any language.
+---
 
-| Level | Count |
-| --- | --- |
-| Regions | 31 (26 mainland, 5 Zanzibar) |
-| Districts | 158 |
-| Wards | 3,959 |
-| Streets | 16,692 |
-| Places (villages, hamlets) | 64,000+ |
+**mahali** (Swahili for *place*) is a clean, open list of Tanzania's places, ready for address forms, search and data checks. It ships as plain CSV and JSON, so it works in any language, on any platform, with nothing to install.
 
-Zanzibar's five regions are listed; their districts, wards and shehia are not in yet. Help add them.
+Built for the moment a person fills in an address: pick a region, then a district, a ward and a street, each one a short searchable list. No more "Dar es salaam", "DSM" and "Dar-es-Salaam" in the same database.
 
-## Files
+## Contents
 
-| File | What it holds |
-| --- | --- |
-| `data/regions.csv` | All 31 regions: name, postcode prefix, zone |
-| `data/tanzania.csv` | One row per place: region, district, ward, street, place, with postcodes. The source of truth |
-| `json/index.json` | Every region with its districts. Small, load it first |
-| `json/regions/<region>.json` | One region down to places, e.g. `json/regions/dar-es-salaam.json` |
+- [Quick start](#quick-start)
+- [What's inside](#whats-inside)
+- [Data shape](#data-shape)
+- [Building an address picker](#building-an-address-picker)
+- [Contributing](#contributing)
+- [Brand](#brand)
 
-Codes are postcodes: `23` is Arusha, `231` Arusha CBD, `23101` Sekei ward.
+## Quick start
 
-```json
-{ "name": "Arusha", "slug": "arusha", "code": "23", "zone": "mainland",
-  "districts": [{ "name": "Arusha CBD", "code": "231",
-    "wards": [{ "name": "Sekei", "code": "23101",
-      "streets": [{ "name": "Sanawari", "places": [] }] }] }] }
+Load the index straight from GitHub. It holds every region with its districts and is small enough to load on first paint.
+
+```js
+const base = "https://raw.githubusercontent.com/isonlycoolie/mahali/main/json";
+
+const regions = await fetch(`${base}/index.json`).then((r) => r.json());
+const mwanza = await fetch(`${base}/regions/mwanza.json`).then((r) => r.json());
 ```
 
-## Use it
-
-Straight from GitHub:
-
-```
-https://raw.githubusercontent.com/isonlycoolie/mahali/main/json/index.json
-https://raw.githubusercontent.com/isonlycoolie/mahali/main/json/regions/mwanza.json
-```
-
-Or as a package:
+Or install it as a package and import the files directly:
 
 ```sh
 npm install github:isonlycoolie/mahali
@@ -49,21 +41,17 @@ npm install github:isonlycoolie/mahali
 
 ```js
 import regions from "mahali/json/index.json" with { type: "json" };
+import dar from "mahali/json/regions/dar-es-salaam.json" with { type: "json" };
 ```
 
-Load `index.json` for the region and district pickers, then fetch one region file when someone picks a region.
+## What's inside
 
-## Add or fix a place
+- **`data/regions.csv`** lists all 31 regions with their postcode prefix and zone (mainland or Zanzibar).
+- **`data/tanzania.csv`** holds one row per place: region, district, ward, street and village, each with its postcode. This is the source of truth; everything else is generated from it.
+- **`json/index.json`** has every region and its districts, about 8 KB.
+- **`json/regions/<region>.json`** has one region in full, down to villages, for example `json/regions/arusha.json`.
 
-1. Edit `data/tanzania.csv` (or `data/regions.csv` for a region).
-2. Run `node scripts/build.mjs` to rebuild `json/`. Node 20 or newer, nothing to install.
-3. Open a pull request with both changes.
+Names are written the way Tanzanians write them: `Dar es Salaam`, `Chang'ombe`, `Mtaa wa AICC`. Codes are postcodes, so `23` is Arusha, `231` is Arusha CBD and `23101` is Sekei ward.
 
-Names are written the way people write them: `Dar es Salaam`, `Chang'ombe`, `Mtaa wa AICC`.
+Zanzibar's five regions are listed. Their districts, wards and shehia are the next addition, and contributions are very welcome.
 
-## Where it comes from
-
-The mainland list started from the national postcode listing as gathered in
-[HackEAC/tanzania-locations-db](https://github.com/HackEAC/tanzania-locations-db), then cleaned:
-names in normal case, stray quotes removed, duplicate rows dropped and one code per ward.
-`node scripts/import.mjs <folder of region CSVs>` repeats that import.
