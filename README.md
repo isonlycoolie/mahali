@@ -26,6 +26,7 @@ Built for the moment a person fills in an address: pick a region, then a distric
 - [Data shape](#data-shape)
 - [Building an address picker](#building-an-address-picker)
 - [Contributing](#contributing)
+- [License](#license)
 
 ## Quick start
 
@@ -105,3 +106,7 @@ Corrections and additions are welcome, from a misspelt street to a whole region.
 3. Open a pull request with both changes and a line on where the information comes from.
 
 Keep one row per place, use the local spelling, and leave a column empty rather than guessing.
+
+## License
+
+[MIT](LICENSE). Free to use in personal and commercial projects.

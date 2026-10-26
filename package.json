@@ -2,6 +2,7 @@
   "name": "mahali",
   "version": "1.0.0",
   "description": "Tanzania regions, districts, wards, streets and villages with postcodes, as clean CSV and JSON for address forms",
+  "license": "MIT",
   "type": "module",
   "files": [
     "data",
