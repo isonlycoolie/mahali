@@ -1,5 +1,6 @@
-// Imports the HackEAC region CSVs into data/tanzania.csv: names cleaned, duplicates dropped, one code per ward.
-// Usage: node scripts/import.mjs <path to tanzania-locations-db/location-files>
+// Imports region CSVs (region, code, district, code, ward, code, street, place) into data/tanzania.csv:
+// names cleaned, duplicates dropped, one code per ward.
+// Usage: node scripts/import.mjs <folder of region CSV files>
 
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
