@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="brand/png/banner-1600.png" alt="mahali: every place in Tanzania, from region down to street" width="100%">
+  <img src="brand/png/banner-1600.png" alt="mahali: Tanzania regions, districts, wards and streets list with postcodes" width="100%">
 </p>
 
 <p align="center">
@@ -13,7 +13,9 @@
 
 ---
 
-**mahali** (Swahili for *place*) is a clean, open list of Tanzania's places, ready for address forms, search and data checks. It ships as plain CSV and JSON, so it works in any language, on any platform, with nothing to install.
+**mahali** (Swahili for *place*) is a clean, open list of every region, district, ward, street and village in Tanzania, with postcodes. Use it for address forms, dropdowns, autocomplete, search and data checks. It ships as plain CSV and JSON, so it works in any language, on any platform, with nothing to install.
+
+*Mikoa, wilaya, kata, mitaa na vijiji vyote vya Tanzania, pamoja na postikodi, tayari kwa fomu za anwani.*
 
 Built for the moment a person fills in an address: pick a region, then a district, a ward and a street, each one a short searchable list. No more "Dar es salaam", "DSM" and "Dar-es-Salaam" in the same database.
 
@@ -82,12 +84,6 @@ Each region file nests districts, wards, streets and places, sorted by name:
     }
   ]
 }
-```
-
-The index keeps only what a first screen needs:
-
-```json
-[{ "name": "Arusha", "slug": "arusha", "code": "23", "zone": "mainland", "districts": [{ "name": "Arumeru", "code": "233" }] }]
 ```
 
 ## Building an address picker
