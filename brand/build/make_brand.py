@@ -139,20 +139,12 @@ defs = (
     '<feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>'
 )
 
-# Left: app icon, wordmark, line, counts.
-left = [f'<rect x="120" y="170" width="96" height="96" rx="21.6" fill="{CARD}" stroke="{LINE}"/>', mark(GREEN, CARD, 144, 194, 48)]
+# Left: app icon, wordmark and line.
+left = [f'<rect x="120" y="200" width="96" height="96" rx="21.6" fill="{CARD}" stroke="{LINE}"/>', mark(GREEN, CARD, 144, 224, 48)]
 size = 84 / ink_height(HEAD, "M", 1)
-left.append(text("MAHALI", HEAD, size, 116, 398, LIGHT, tracking=0.0, bold=size * 0.012)[0])
-left.append(text("Every place in Tanzania,", MED, 38, 120, 478, LIGHT, tracking=-0.01)[0])
-left.append(text("from region down to street.", MED, 38, 120, 526, MUTED, tracking=-0.01)[0])
-x = 120
-for i, part in enumerate(["31 regions", "158 districts", "3,959 wards", "16,692 streets"]):
-    if i:
-        left.append(f'<circle cx="{x + 12}" cy="{604}" r="3" fill="{GREEN}"/>')
-        x += 24
-    p, w = text(part, REG, 20, x, 611, MUTED)
-    left.append(p)
-    x += w
+left.append(text("MAHALI", HEAD, size, 116, 428, LIGHT, tracking=0.0, bold=size * 0.012)[0])
+left.append(text("Every place in Tanzania,", MED, 38, 120, 508, LIGHT, tracking=-0.01)[0])
+left.append(text("from region down to street.", MED, 38, 120, 556, MUTED, tracking=-0.01)[0])
 
 
 # Right: the dropdown people meet in a form, with real Dar es Salaam places.
