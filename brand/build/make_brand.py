@@ -98,3 +98,90 @@ for name, dot, word in (("lockup.svg", "#FFFFFF", INK), ("lockup-on-dark.svg", I
     write(name, svg(math.ceil(w + 2), 48, body))
 write("app-icon.svg", app_icon(INK, GREEN, INK))
 write("app-icon-light.svg", app_icon(LIGHT, GREEN, LIGHT))
+
+
+# ---------------------------------------------------------------- README banner
+W, H = 1600, 760
+random.seed(7)
+
+# Terrain: a halftone field whose dots swell over a few soft hills, like a map seen from far above.
+HILLS = [(720, 150, 230, 0.9), (800, 650, 250, 1.0), (1560, 110, 230, 0.95), (1540, 720, 210, 0.85), (1180, 40, 200, 0.6), (420, 740, 240, 0.45)]
+
+
+def height(x, y):
+    v = sum(w * math.exp(-((x - cx) ** 2 + (y - cy) ** 2) / (r * r)) for cx, cy, r, w in HILLS)
+    return max(0.0, min(1.0, v + 0.08 * math.sin(x / 70) * math.cos(y / 55)))
+
+
+dots = []
+for gy in range(0, H + 14, 14):
+    for gx in range(0, W + 14, 14):
+        x, y = gx + (7 if (gy // 14) % 2 else 0), gy
+        v = height(x, y)
+        r = 0.5 + 4.4 * v
+        if r > 0.9:
+            dots.append(f'<circle cx="{x}" cy="{y}" r="{r:.2f}" fill="{GREEN}" fill-opacity="{0.18 + 0.62 * v:.2f}"/>')
+
+PINS = [(722, 168), (808, 646), (1548, 150)]
+rings = "".join(
+    f'<circle cx="{px}" cy="{py}" r="{rr}" fill="none" stroke="{GREEN}" stroke-opacity="{0.34 - rr / 700:.2f}" stroke-width="1.2"/>'
+    for px, py in PINS for rr in (46, 92, 138, 184))
+pins = "".join(mark(GREEN, INK, px - 16, py - 40, 32) for px, py in PINS)
+
+defs = (
+    f'<linearGradient id="veil" x1="0" x2="1"><stop offset="0" stop-color="{INK}" stop-opacity="0.97"/>'
+    f'<stop offset="0.3" stop-color="{INK}" stop-opacity="0.86"/><stop offset="0.55" stop-color="{INK}" stop-opacity="0.42"/><stop offset="1" stop-color="{INK}" stop-opacity="0.3"/></linearGradient>'
+    f'<linearGradient id="fade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="{INK}" stop-opacity="0.55"/>'
+    f'<stop offset="0.3" stop-color="{INK}" stop-opacity="0"/><stop offset="0.7" stop-color="{INK}" stop-opacity="0"/>'
+    f'<stop offset="1" stop-color="{INK}" stop-opacity="0.6"/></linearGradient>'
+    '<filter id="lift" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur in="SourceAlpha" stdDeviation="28"/>'
+    '<feOffset dy="24"/><feComponentTransfer><feFuncA type="linear" slope="0.55"/></feComponentTransfer>'
+    '<feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>'
+)
+
+# Left: app icon, wordmark, line, counts.
+left = [f'<rect x="120" y="170" width="96" height="96" rx="21.6" fill="{CARD}" stroke="{LINE}"/>', mark(GREEN, CARD, 144, 194, 48)]
+size = 84 / ink_height(HEAD, "M", 1)
+left.append(text("MAHALI", HEAD, size, 116, 398, LIGHT, tracking=0.0, bold=size * 0.012)[0])
+left.append(text("Every place in Tanzania,", MED, 38, 120, 478, LIGHT, tracking=-0.01)[0])
+left.append(text("from region down to street.", MED, 38, 120, 526, MUTED, tracking=-0.01)[0])
+x = 120
+for i, part in enumerate(["31 regions", "158 districts", "3,959 wards", "16,692 streets"]):
+    if i:
+        left.append(f'<circle cx="{x + 12}" cy="{604}" r="3" fill="{GREEN}"/>')
+        x += 24
+    p, w = text(part, REG, 20, x, 611, MUTED)
+    left.append(p)
+    x += w
+
+
+# Right: the dropdown people meet in a form, with real Dar es Salaam places.
+def field(y, label, value, focused=False, placeholder=False):
+    out = [text(label, MED, 15, 962, y, MUTED)[0],
+           f'<rect x="962" y="{y + 12}" width="476" height="52" rx="12" fill="{INK}" stroke="{GREEN if focused else LINE}" stroke-width="{1.6 if focused else 1}"/>',
+           text(value, REG, 18, 980, y + 44, MUTED if placeholder else LIGHT)[0],
+           f'<path d="M1408 {y + 34}l6 6l6 -6" fill="none" stroke="{MUTED}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>']
+    return "".join(out)
+
+
+card = [f'<rect x="930" y="108" width="540" height="566" rx="24" fill="{CARD}" stroke="{LINE}"/>',
+        field(156, "Region", "Dar es Salaam"), field(250, "District", "Kinondoni"), field(344, "Ward", "Choose", focused=True, placeholder=True)]
+top = 424
+card.append(f'<rect x="962" y="{top}" width="476" height="222" rx="14" fill="#232428" stroke="{LINE}"/>')
+card.append(f'<circle cx="988" cy="{top + 25}" r="6.5" fill="none" stroke="{MUTED}" stroke-width="1.8"/>'
+            f'<path d="M993 {top + 30}l5 5" stroke="{MUTED}" stroke-width="1.8" stroke-linecap="round"/>')
+typed, tw = text("Ma", REG, 17, 1008, top + 31, LIGHT)
+card.append(typed + f'<rect x="{1010 + tw:.1f}" y="{top + 15}" width="1.6" height="21" fill="{GREEN}"/>')
+card.append(f'<rect x="962" y="{top + 49}" width="476" height="1" fill="{LINE}"/>')
+for i, ward in enumerate(["Mabwepande", "Magomeni", "Makongo", "Makumbusho", "Mwananyamala"]):
+    y = top + 58 + i * 32
+    if ward == "Makongo":
+        card.append(f'<rect x="970" y="{y}" width="460" height="30" rx="8" fill="#FFFFFF" fill-opacity="0.06"/>'
+                    f'<path d="M1404 {y + 15}l5 5l9 -10" fill="none" stroke="{GREEN}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>')
+    card.append(text(ward, MED if ward == "Makongo" else REG, 16, 984, y + 20, LIGHT)[0])
+
+banner = (f'<rect width="{W}" height="{H}" fill="{INK}"/>' + "".join(dots) + rings + pins
+          + f'<rect width="{W}" height="{H}" fill="url(#veil)"/><rect width="{W}" height="{H}" fill="url(#fade)"/>'
+          + "".join(left) + f'<g filter="url(#lift)">{"".join(card)}</g>')
+write("banner.svg", svg(W, H, banner, defs))
+print("wrote", sorted(os.listdir(OUT)))
