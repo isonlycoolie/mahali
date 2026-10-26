@@ -1,9 +1,12 @@
 {
   "name": "mahali",
   "version": "1.0.0",
-  "description": "Every place in Tanzania, from region down to street and village",
+  "description": "Tanzania regions, districts, wards, streets and villages with postcodes, as clean CSV and JSON for address forms",
   "type": "module",
-  "files": ["data", "json"],
+  "files": [
+    "data",
+    "json"
+  ],
   "exports": {
     "./json/*": "./json/*",
     "./data/*": "./data/*"
@@ -12,5 +15,28 @@
     "build": "node scripts/build.mjs"
   },
   "repository": "github:isonlycoolie/mahali",
-  "keywords": ["tanzania", "regions", "districts", "wards", "streets", "postcodes", "address"]
+  "keywords": [
+    "tanzania",
+    "regions",
+    "districts",
+    "wards",
+    "streets",
+    "villages",
+    "postcodes",
+    "address",
+    "address-form",
+    "autocomplete",
+    "dropdown",
+    "locations",
+    "administrative-divisions",
+    "geodata",
+    "dataset",
+    "csv",
+    "json",
+    "swahili",
+    "mikoa",
+    "wilaya",
+    "kata"
+  ],
+  "homepage": "https://github.com/isonlycoolie/mahali#readme"
 }
